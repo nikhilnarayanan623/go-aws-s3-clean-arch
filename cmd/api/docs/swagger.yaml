@@ -1,0 +1,52 @@
+definitions:
+  response.Response:
+    properties:
+      data: {}
+      error: {}
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+info:
+  contact: {}
+paths:
+  /uploads/one:
+    post:
+      consumes:
+      - multipart/form-data
+      - application/json
+      operationId: UploadSingleFile
+      parameters:
+      - description: Upload one file
+        in: formData
+        name: file
+        required: true
+        type: file
+      - description: File Name
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: File Description
+        in: formData
+        name: description
+        required: true
+        type: string
+      responses:
+        "201":
+          description: Successfully file uploaded
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Invalid inputs
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Failed to upload file
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: api for upload single file
+      tags:
+      - File
+swagger: "2.0"
