@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"mime/multipart"
+	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
@@ -19,8 +20,12 @@ type awsService struct {
 	bucketName string
 }
 
+const (
+	filePreSignDuration = time.Hour * 24
+)
+
 // To get a new file service
-func NewUploadService(cfg config.Config) (interfaces.UploadService, error) {
+func NewUploadService(cfg config.Config) (interfaces.CloudService, error) {
 
 	// create a new session of aws
 	session, err := session.NewSession(&aws.Config{
@@ -52,8 +57,8 @@ func (c *awsService) UploadOne(ctx context.Context, fileHeader *multipart.FileHe
 
 	_, err = c.service.PutObject(&s3.PutObjectInput{
 		Body:   file,
-		Bucket: &c.bucketName,
-		Key:    &awsFileID,
+		Bucket: aws.String(c.bucketName),
+		Key:    aws.String(awsFileID),
 	})
 
 	if err != nil {
@@ -66,4 +71,16 @@ func (c *awsService) UploadOne(ctx context.Context, fileHeader *multipart.FileHe
 // To upload multiple files
 func (c *awsService) UploadMany(ctx context.Context, filesHeaders *[]multipart.FileHeader) (awsFileIDs []string, err error) {
 	return nil, nil
+}
+
+func (c *awsService) GetOneUrl(ctx context.Context, uploadID string) (url string, err error) {
+
+	req, _ := c.service.GetObjectRequest(&s3.GetObjectInput{
+		Bucket: aws.String(c.bucketName),
+		Key:    aws.String(uploadID),
+	})
+
+	url, err = req.Presign(filePreSignDuration)
+
+	return
 }

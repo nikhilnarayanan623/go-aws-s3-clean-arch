@@ -24,7 +24,6 @@ func NewFileHandler(usecase usecase.FileUseCase) interfaces.FileHandler {
 // UploadSingleFile godoc
 // @summary api for upload single file
 // @Accept multipart/form-data
-// @Accept       json
 // @tags File
 // @id UploadSingleFile
 // @Param     file   formData     file   true   "Upload one file"
@@ -59,9 +58,32 @@ func (c *fileHandler) UploadSingleFile(ctx *gin.Context) {
 
 	err = c.usecase.UploadSingleFile(ctx, singleFile)
 	if err != nil {
-		response.ErrorResponse(ctx, http.StatusBadRequest, "failed to upload file", err, nil)
+		response.ErrorResponse(ctx, http.StatusBadRequest, "Failed to upload file", err, nil)
 		return
 	}
 
 	response.SuccessResponse(ctx, http.StatusCreated, "Successfully file uploaded")
+}
+
+// GetAllFiles godoc
+// @summary api for retrieve all files
+// @tags File
+// @id GetAllFiles
+// @Param   page_number query int false "Page Number"
+// @Param count query int false "Count of Files"
+// @Router /all [get]
+// @Success 201 {object} response.Response{data=[]response.SingleFile} "Successfully retrieved all files"
+// @Failure 500 {object} response.Response{} "Failed to retrieve all files"
+func (c *fileHandler) GetAllFiles(ctx *gin.Context) {
+
+	pagination := request.GetPagination(ctx)
+
+	files, err := c.usecase.GetAllFiles(ctx, pagination)
+
+	if err != nil {
+		response.ErrorResponse(ctx, http.StatusInternalServerError, "Failed to retrieve all files", err, nil)
+		return
+	}
+
+	response.SuccessResponse(ctx, http.StatusOK, "Successfully retrieved all files", files)
 }
