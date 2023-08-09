@@ -16,12 +16,12 @@ type Config struct {
 	AwsAccessKeyID string `mapstructure:"AWS_ACCESS_KEY_ID"`
 	AwsSecretKey   string `mapstructure:"AWS_SECRET_ACCESS_KEY"`
 	AwsRegion      string `mapstructure:"AWS_REGION"`
-	AwsBucketName  string `mapstructure:"BUCKET_NAME"`
+	AwsBucketName  string `mapstructure:"AWS_BUCKET_NAME"`
 }
 
 var envs = []string{
 	"PORT", "DB_HOST", "DB_NAME", "DB_USER", "DB_PORT", "DB_PASSWORD",
-	"AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "AWS_REGION", "BUCKET_NAME",
+	"AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "AWS_REGION", "AWS_BUCKET_NAME",
 }
 
 func LoadConfig() (Config, error) {
