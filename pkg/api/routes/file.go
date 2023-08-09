@@ -13,4 +13,5 @@ func SetupFileRoutes(api *gin.RouterGroup, fileHandler interfaces.FileHandler) {
 		upload.POST("/one", fileHandler.UploadSingleFile)
 	}
 
+	api.GET("/all", fileHandler.GetAllFiles)
 }

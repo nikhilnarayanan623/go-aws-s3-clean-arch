@@ -8,14 +8,55 @@ definitions:
       success:
         type: boolean
     type: object
+  response.SingleFile:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+      uploaded_at:
+        type: string
+      url:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
+  /all:
+    get:
+      operationId: GetAllFiles
+      parameters:
+      - description: Page Number
+        in: query
+        name: page_number
+        type: integer
+      - description: Count of Files
+        in: query
+        name: count
+        type: integer
+      responses:
+        "201":
+          description: Successfully retrieved all files
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/response.SingleFile'
+                  type: array
+              type: object
+        "500":
+          description: Failed to retrieve all files
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: api for retrieve all files
+      tags:
+      - File
   /uploads/one:
     post:
       consumes:
       - multipart/form-data
-      - application/json
       operationId: UploadSingleFile
       parameters:
       - description: Upload one file

@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/nikhilnarayanan623/go-aws-s3-clean-arch/pkg/api/handler/request"
 	"github.com/nikhilnarayanan623/go-aws-s3-clean-arch/pkg/domain"
 	"github.com/nikhilnarayanan623/go-aws-s3-clean-arch/pkg/repository/interfaces"
 	"github.com/nikhilnarayanan623/go-aws-s3-clean-arch/pkg/utils"
@@ -57,4 +58,16 @@ func (c *fileDatabase) SaveSingleFile(ctx context.Context, file domain.SingleFil
 	err := c.db.Exec(query, file.FileID, file.Name, file.Description, time.Now()).Error
 
 	return err
+}
+
+func (c *fileDatabase) FindAllFiles(ctx context.Context,
+	pagination request.Pagination) (files []interfaces.SingleFileDetails, err error) {
+
+	query := `SELECT f.upload_id, s.id, s.file_id, s.name, s.description, s.uploaded_at 
+	FROM single_files AS s
+	INNER JOIN files f ON s.file_id = f.id`
+
+	err = c.db.Raw(query).Scan(&files).Error
+
+	return
 }
