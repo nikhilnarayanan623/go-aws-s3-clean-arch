@@ -8,7 +8,6 @@ The go-aws-s3-clean-arch project showcases how to upload and download files to/f
 The project utilizes the following packages:
 1. [AWS SDK](https://github.com/aws/aws-sdk-go): A comprehensive SDK for integrating Go applications with Amazon Web Services, providing functionalities for interacting with Amazon S3 and other AWS services.
 2. [GIN](github.com/gin-gonic/gin): A web framework written in Go that combines high performance with an API similar to Martini.
-3. [JWT](github.com/golang-jwt/jwt): A Go implementation of JSON Web Tokens for secure authentication and authorization.
 4. [GORM](https://gorm.io/index.html) with [PostgreSQL](https://gorm.io/docs/connecting_to_the_database.html#PostgreSQL): A powerful ORM library for Go that simplifies database operations.
 5. [Wire](https://github.com/google/wire): A code generation tool for dependency injection, making it easier to connect components.
 6. [Viper](https://github.com/spf13/viper): A configuration solution for Go applications, supporting various formats and 12-Factor app principles.
